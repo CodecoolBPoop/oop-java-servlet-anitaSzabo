@@ -25,11 +25,24 @@ public class WebShopServlet extends HttpServlet {
 
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < Itemstore.itemList.size(); i++) {
-            buffer.append("<div>");
+            buffer.append("<table>");
+            buffer.append("<div>");  // FORMOKKAL
             buffer.append(Itemstore.itemList.get(i).getName() + " " +
-                    Itemstore.itemList.get(i).getPrice() + "<a href=\"/add\">Add</a>" + "<a href=\"/remove\">Remove</a>");
+                    Itemstore.itemList.get(i).getPrice() + "<tr><td><a href=\"/add?item_id_add=" + i + "\">Add</a></td>" + "<td><a href=\"/remove?item_id_remove=" + i +"\">Remove</a></tr>");
             buffer.append("</a>");
             buffer.append("</div>");
+            buffer.append("</table>");
+        }
+
+
+        String listIdAdd = request.getParameter("item_id_add");
+        if (listIdAdd != null) {
+            Itemstore.add(listIdAdd);
+        }
+
+        String listIdRemove = request.getParameter("item_id_remove");
+        if (listIdRemove != null) {
+            Itemstore.remove(listIdRemove);
         }
 
         out.println(
@@ -38,6 +51,7 @@ public class WebShopServlet extends HttpServlet {
                         "<body>\n" +
                         "<h1>Webshop</h1>" +
                         "<div>" + buffer.toString() + "</div>" +
+                        Itemstore.itemList +
                         "</body></html>");
     }
 }
